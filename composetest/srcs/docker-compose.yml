@@ -1,0 +1,35 @@
+version: '3.1'
+
+services:
+  mariadb:
+    build:
+      context: .
+      dockerfile: ./requirements/mariadb/Dockerfile
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file:
+      - .env
+  wordpress:
+    depends_on:
+      - mariadb
+    build:
+      context: .
+      dockerfile: ./requirements/wordpress/Dockerfile
+    volumes:
+      - wordpress_data:/var/www/html
+    env_file:
+      - .env
+  nginx:
+    depends_on:
+      - wordpress
+    build:
+      context: .
+      dockerfile: ./requirements/nginx/Dockerfile
+    volumes:
+      - wordpress_data:/var/www/html
+    ports:
+      - 8080:80
+
+volumes:
+  db_data: {}
+  wordpress_data: {}

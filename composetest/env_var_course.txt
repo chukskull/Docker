@@ -1,0 +1,90 @@
+Environment variables (env variables) are dynamic-named values that can affect the way running processes behave on a computer. 
+They are part of the environment in which a process runs. For example, a running process can query the value of the TEMP environment variable to discover a suitable location to store temporary files, 
+or the HOME or USERPROFILE variable to find the directory structure owned by the user running the process.
+In the context of software development, environment variables are often used to:
+
+    Keep sensitive data secure: Environment variables are a good place to store sensitive data such as API keys, database passwords, and other credentials. This way, these sensitive data are not hard-coded into the application's source code, which is especially important when the code is publicly accessible.
+    Configure behavior for different environments: They can be used to set application configurations that depend on the environment where the application is running. For example, you might have a development environment, a test environment, and a production environment, each requiring different settings.
+    Enable portability: Environment variables allow more flexibility and portability, as the same application code can be used in different environments with different configurations.
+
+In Docker, environment variables play a crucial role. Docker allows setting environment variables in the image using the Dockerfile and at runtime using the -e option. However, when you're dealing with multi-container applications orchestrated with Docker Compose, it's more convenient to manage these variables in the docker-compose.yml file.
+Here's an example of how you might use environment variables in a docker-compose.yml file:
+
+yaml
+
+Copy
+
+version: '3'
+services:
+  web:
+    image: my_web_app
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=my_secret_key
+      - DATABASE_URL=postgres://user:password@db:5432/mydatabase
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=mydatabase
+
+In this example, the web service has three environment variables: DEBUG, SECRET_KEY, and DATABASE_URL. The db service has three environment variables: POSTGRES_USER, POSTGRES_PASSWORD, and POSTGRES_DB. These variables can be accessed by the respective services at runtime and can be used to configure the application or to store sensitive data.
+Remember, it's not a good practice to store sensitive data directly in the docker-compose.yml file, especially if it's going to be committed to a version control system like git. Instead, you can use an .env file to store these variables and reference them in the docker-compose.yml file:
+
+yaml
+
+Copy
+
+version: '3'
+services:
+  web:
+    image: my_web_app
+    env_file:
+      - web-variables.env
+  db:
+    image: postgres
+    env_file:
+      - db-variables.env
+
+In this example, web-variables.env and db-variables.env are files that contain the environment variables for the web and db services, respectively. These files should be kept secure and not committed to version control.
+
+GPT-4
+avatar
+
+and what is env variables in env and why every program like mariadb having env variable like an example , explain why we use env variables in linux and more exlanation from scratch that i can understand clearly
+
+a few seconds ago
+
+Good response
+Cancel
+Submit
+
+Bad response
+Cancel
+Submit
+Environment variables in Linux (and other Unix-like operating systems) are used to define temporary values for current user sessions. These values are used by the processes that run within the system. They can be anything from command paths, locale settings, to where temporary files should be stored.
+For example, the PATH environment variable is a fundamental part of the Linux operating system. It tells the shell which directories to search for executable files in response to commands issued by a user.
+A simple example of PATH could be:
+
+Copy
+
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+When you type a command like ls, the shell looks for the ls program in these directories in the order they are listed. If it finds the program, it executes it. If not, you'll get a message saying the command was not found.
+Now, let's talk about why programs like MariaDB use environment variables. MariaDB, like many other applications, uses environment variables to allow users to customize its behavior. For example, MariaDB uses the MYSQL_ROOT_PASSWORD environment variable to set the password for the root user of the database. This is a sensitive piece of information, and it's not a good idea to hard-code it into the application. By using an environment variable, MariaDB allows the user to set this password at runtime, which is much more secure.
+Here's an example of how you might use this in a docker-compose.yml file:
+
+yaml
+
+Copy
+
+version: '3'
+services:
+  db:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=my_secure_password
+
+In this example, the db service is using the mariadb image, and the root password for the MariaDB database is being set to my_secure_password using the MYSQL_ROOT_PASSWORD environment variable.
+In summary, environment variables are a flexible and secure way to configure applications. They allow you to customize the behavior of an application without modifying its code, and they provide a secure way to handle sensitive data like passwords and API keys. They are a fundamental part of Linux and Unix-like operating systems, and they are widely used in software development and operations.
