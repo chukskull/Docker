@@ -16,22 +16,15 @@ FROM debian:buster
 #     php7.4-gd \
 #     php7.4-curl
 
-RUN apt-get update && apt -y install php7.3 php-mysqli php-fpm wget sendmail curl
+RUN apt-get update && apt -y install php7.3 php-mysqli php7.3-fpm wget sendmail curl
 
-# # Download and install WordPress
-# RUN curl -O https://wordpress.org/latest.tar.gz
-# RUN tar xzvf latest.tar.gz
-# RUN mkdir -p /var/www/html
-
-# COPY ./simple.php /var/www/html
-
-# Configure PHP-FPM
 
 
 # ENV MYSQL_ROOT_PW=fes123
 # ENV MYSQL_DATABASE=mariadb
 # ENV MYSQL_USER=sngt
 # ENV MYSQL_PW=fes123
+# ENV MYSQL_HOST=wordpress
 # ENV TITLE=inception
 # ENV DOMN=snagat.42.fr
 # ENV ADMNUSR=snagat
@@ -42,9 +35,10 @@ RUN apt-get update && apt -y install php7.3 php-mysqli php-fpm wget sendmail cur
 # ENV USRPW=fes123
 
 # Expose port 9000 for php-fpm
+EXPOSE 9000
 COPY ./script.sh /
 RUN chmod 777 /script.sh
-EXPOSE 9000
-ENTRYPOINT [ "./script.sh" ]
+
+ENTRYPOINT ["./script.sh"]
 # Start PHP-FPM
 CMD ["php-fpm7.3", "-F"]

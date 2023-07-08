@@ -1,35 +1,87 @@
-version: '3.1'
+# version: '3.1'
+
+# services:
+#   mariadb:
+#     build: ./requirements/mariadb/.
+#     volumes:
+#       - ./data:/var/lib/mysql
+#     env_file:
+#       - .env
+#     networks:
+#       - backend
+#     ports:
+#       - "80:80"
+
+#   # wordpress:
+#   #   depends_on:
+#   #     - mariadb
+#   #   build: ./requirements/wordpress/.
+#   #   # volumes:
+#   #   #   - ./data:/var/www/html
+#   #   networks:
+#   #     - backend
+#   #   # env_file:
+#   #   #   - .env
+#   #   ports:
+#   #     - "5001:81"
+
+# networks:
+#   backend:
+#     driver: bridge
+
+# volumes:
+#   db_data:
+#   wordpress_data:
+#     driver: local
+#     driver_opts:
+#       o: bind
+#       type: none
+
 
 services:
   mariadb:
-    build:
-      context: .
-      dockerfile: ./requirements/mariadb/Dockerfile
+    env_file:
+      - .env
+    build: ./requirements/mariadb
+    image: mariadb:1337
+    container_name: mariadb
+    networks:
+      - inception
     volumes:
       - db_data:/var/lib/mysql
-    env_file:
-      - .env
+    restart: always
   wordpress:
+    container_name: wordpress
     depends_on:
       - mariadb
-    build:
-      context: .
-      dockerfile: ./requirements/wordpress/Dockerfile
-    volumes:
-      - wordpress_data:/var/www/html
     env_file:
       - .env
+    build: ./requirements/wordpress
+    image: wordpress:1337
+    networks:
+      - inception
+    volumes:
+      - ./data:/var/www/html
+    ports:
+      - "9000:9000"
   nginx:
+    container_name:  nginx
+    networks:
+      - inception
     depends_on:
       - wordpress
-    build:
-      context: .
-      dockerfile: ./requirements/nginx/Dockerfile
+    build: ./requirements/nginx
+    image: nginx:1337
     volumes:
-      - wordpress_data:/var/www/html
+      - ./data:/etc/nginx/conf.d
+      - ./data:/var/www/html
     ports:
-      - 8080:80
+      - 443:443
+networks:
+  inception:
+    driver: bridge
 
 volumes:
-  db_data: {}
-  wordpress_data: {}
+    db_data:
+
+  

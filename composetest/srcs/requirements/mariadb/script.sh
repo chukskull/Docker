@@ -1,7 +1,9 @@
 #!/bin/bash
 
-service mysql start
 
+echo $MYSQL_DATABASE $MYSQL_ROOT_PW
+
+service mysql start
 
 mysql -u root -p$MYSQL_ROOT_PW -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
 
@@ -17,4 +19,6 @@ mysql -u root -p$MYSQL_ROOT_PW -e "FLUSH PRIVILEGES;"
 
 
 kill `cat /var/run/mysqld/mysqld.pid`
+
+
 exec "$@"

@@ -20,3 +20,15 @@ networks:
     driver_opts:
       foo: "1"
       bar: "2"
+
+
+      define( 'DB_NAME', 'mariadb' );
+
+/** Database username */
+define( 'DB_USER', 'sngt' );
+
+/** Database password */
+define( 'DB_PASSWORD', 'fes123' );
+
+/** Database hostname */
+define( 'DB_HOST', 'localhost' );
