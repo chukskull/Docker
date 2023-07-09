@@ -36,7 +36,7 @@ RUN apt-get update && apt -y install php7.3 php-mysqli php7.3-fpm wget sendmail 
 
 # Expose port 9000 for php-fpm
 EXPOSE 9000
-COPY ./script.sh /
+COPY ./tools/script.sh /
 RUN chmod 777 /script.sh
 
 ENTRYPOINT ["./script.sh"]

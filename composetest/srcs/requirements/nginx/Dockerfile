@@ -19,7 +19,7 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/p
 
 RUN rm -rf /etc/nginx/sites-enabled/nginx.conf
 
-COPY nginx.conf /etc/nginx/sites-enabled/
+COPY ./conf/nginx.conf /etc/nginx/sites-enabled/
 
 # COPY index.html /var/www/html/
 
