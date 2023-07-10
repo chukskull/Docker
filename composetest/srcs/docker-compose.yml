@@ -1,43 +1,3 @@
-# version: '3.1'
-
-# services:
-#   mariadb:
-#     build: ./requirements/mariadb/.
-#     volumes:
-#       - ./data:/var/lib/mysql
-#     env_file:
-#       - .env
-#     networks:
-#       - backend
-#     ports:
-#       - "80:80"
-
-#   # wordpress:
-#   #   depends_on:
-#   #     - mariadb
-#   #   build: ./requirements/wordpress/.
-#   #   # volumes:
-#   #   #   - ./data:/var/www/html
-#   #   networks:
-#   #     - backend
-#   #   # env_file:
-#   #   #   - .env
-#   #   ports:
-#   #     - "5001:81"
-
-# networks:
-#   backend:
-#     driver: bridge
-
-# volumes:
-#   db_data:
-#   wordpress_data:
-#     driver: local
-#     driver_opts:
-#       o: bind
-#       type: none
-
-
 services:
   mariadb:
     env_file:
@@ -45,10 +5,12 @@ services:
     build: ./requirements/mariadb
     image: mariadb:1337
     container_name: mariadb
+    ports:
+      - "3306:3306"
     networks:
       - inception
     volumes:
-      - db_data:/var/lib/mysql
+      - db:/var/lib/mysql
     restart: always
   wordpress:
     container_name: wordpress
@@ -61,7 +23,7 @@ services:
     networks:
       - inception
     volumes:
-      - ./data:/var/www/html
+      - wp:/var/www/html
     ports:
       - "9000:9000"
   nginx:
@@ -73,8 +35,7 @@ services:
     build: ./requirements/nginx
     image: nginx:1337
     volumes:
-      - ./data:/etc/nginx/conf.d
-      - ./data:/var/www/html
+      - wp:/var/www/html
     ports:
       - 443:443
 networks:
@@ -82,6 +43,18 @@ networks:
     driver: bridge
 
 volumes:
-    db_data:
-
+    wp:
+      name : wp
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: /home/snagat/data/wp
+    db:
+      name : db
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: /home/snagat/data/db
   

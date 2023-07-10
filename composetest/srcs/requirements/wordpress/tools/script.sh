@@ -29,7 +29,7 @@ MYSQL_HOST='mariadb'
 # USR_EMAIL=salh@gmail.com
 # USRPW=fes123
 
-mkdir /run/php
+
 
 sed -i 's/\/run\/php\/php7.3-fpm.sock/9000/' /etc/php/7.3/fpm/pool.d/www.conf
 # sed '/9000/a  ;listen = /run/php/php7.3-fpm.sock' /etc/php/7.3/fpm/pool.d/www.conf

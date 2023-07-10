@@ -18,7 +18,7 @@ RUN sed -i 's/bind-address\s*=\s*127\.0\.0\.1/bind-address = 0.0.0.0/g' /etc/mys
 
 # Expose port 3306 for the database
 EXPOSE 3306
-
+RUN mkdir /run/php
 ENTRYPOINT [ "./script.sh" ]
 
-CMD [ "mysqld" ]
+CMD [ "mysqld_safe" ]
