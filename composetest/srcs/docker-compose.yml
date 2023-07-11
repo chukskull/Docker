@@ -5,8 +5,6 @@ services:
     build: ./requirements/mariadb
     image: mariadb:1337
     container_name: mariadb
-    ports:
-      - "3306:3306"
     networks:
       - inception
     volumes:
@@ -25,7 +23,7 @@ services:
     volumes:
       - wp:/var/www/html
     ports:
-      - "9000:9000"
+      - 9000:9000
   nginx:
     container_name:  nginx
     networks:
