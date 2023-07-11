@@ -1,7 +1,7 @@
 # Start from a Debian image.
 FROM debian:stable
 
-# Make sure the package repository is up to date.
+# Update.
 RUN apt-get update
 
 # Install MariaDB.
@@ -18,7 +18,6 @@ EXPOSE 3306
 #Change Bind-Adress to 0.0.0.0
 RUN sed -i 's/bind-address\s*=\s*127\.0\.0\.1/bind-address = 0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf \
     && sed -i 's/# port = 3306/port = 3306/' /etc/mysql/mariadb.cnf
-
 
 ENTRYPOINT [ "./script.sh" ]
 

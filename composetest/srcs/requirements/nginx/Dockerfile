@@ -21,7 +21,6 @@ RUN rm -rf /etc/nginx/sites-enabled/nginx.conf
 
 COPY ./conf/nginx.conf /etc/nginx/sites-enabled/
 
-# COPY index.html /var/www/html/
 
 EXPOSE 81 443
 
